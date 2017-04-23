@@ -1,6 +1,8 @@
 # wai-slack-middleware
 
 A Slack middleware for [wai](https://www.stackage.org/package/wai)
+Used for logging the request information into Slack from a WAI
+application via middleware.
 
 ## Usage:
 

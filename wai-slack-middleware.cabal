@@ -1,7 +1,8 @@
 name:                wai-slack-middleware
 version:             0.1.0.0
--- synopsis:
--- description:
+synopsis:            A Slack middleware for WAI
+description:         Logs the request information into Slack through webhook from 
+                     a WAI application.
 homepage:            https://github.com/psibi/wai-slack-middleware#readme
 license:             BSD3
 license-file:        LICENSE
