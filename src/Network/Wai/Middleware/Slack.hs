@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -20,6 +21,9 @@ import Network.HTTP.Types.Status (Status(..))
 import Network.HTTP.Client hiding (responseStatus)
 import Data.Aeson (encode, object, (.=))
 import Data.Monoid ((<>))
+#if !MIN_VERSION_base(4,8,0)
+import Control.Applicative ((*>))
+#endif
 
 -- $usage
 -- Settings are controlled via the type 'SlackConfig':
