@@ -15,11 +15,13 @@ let slackConfig = SlackConfig {
 }
 ```
 
-The above configuration will send slack notification to all 400 htpp status code.
+The above configuration will send slack notification to all 400 http
+status code.
 
 ### Integrating with yesod scaffolding templates
 
-Go to `Application.hs` and change the function `makeApplication` to something like this:
+Go to `Application.hs` and change the function `makeApplication` to
+something like this:
 
 ``` haskell
 makeApplication :: App -> IO Application
