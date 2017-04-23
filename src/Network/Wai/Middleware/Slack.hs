@@ -52,7 +52,6 @@ import Data.Aeson (encode, object, (.=))
 --   return $ slack slackConfig $ logWare $ defaultMiddlewaresNoLogging appPlain
 -- @
 --
-
 -- | Slack configuration for the middleware
 data SlackConfig = SlackConfig
   { webHookUrl :: String -- ^ Slack webhook URL
@@ -80,5 +79,9 @@ slack sconfig (app :: Application) env sendResponse =
   app env $
   \res ->
      if (logStatus sconfig $ responseStatus res)
-       then slackCall sconfig (show env) *> sendResponse res
+       then slackCall
+              sconfig
+              ("Status " <> (show $ statusCode $ responseStatus res) <> " " <>
+               show env) *>
+            sendResponse res
        else sendResponse res
