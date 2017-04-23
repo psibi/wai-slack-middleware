@@ -19,6 +19,7 @@ import Network.Wai
 import Network.HTTP.Types.Status (Status(..))
 import Network.HTTP.Client hiding (responseStatus)
 import Data.Aeson (encode, object, (.=))
+import Data.Monoid ((<>))
 
 -- $usage
 -- Settings are controlled via the type 'SlackConfig':
@@ -82,6 +83,5 @@ slack sconfig (app :: Application) env sendResponse =
        then slackCall
               sconfig
               ("Status " <> (show $ statusCode $ responseStatus res) <> " " <>
-               show env) *>
-            sendResponse res
+               show env) *> sendResponse res
        else sendResponse res
