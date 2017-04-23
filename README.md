@@ -36,3 +36,7 @@ makeApplication foundation = do
   appPlain <- toWaiAppPlain foundation
   return $ slack slackConfig $ logWare $ defaultMiddlewaresNoLogging appPlain
 ```
+
+Ref:
+
+* [Slack messages API](https://api.slack.com/docs/messages)
