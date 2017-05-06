@@ -34,11 +34,12 @@ import Control.Applicative ((*>))
 -- let slackConfig = SlackConfig {
 --     webHookUrl = "https://hooks.slack.com/services/xxx/xxxxxxxx",
 --     httpManager = appHttpManager foundation,
---     logStatus = \status -> status400 == status
+--     responseFilter = \\resp -> status400 == responseStatus resp,
+--     requestFilter = \\_ -> True
 -- }
 -- @
 --
--- The above configuration will send slack notification to all 400 http status code.
+-- The above configuration will send slack notification for all 400 http status code.
 --
 -- $yesod
 --
@@ -51,19 +52,33 @@ import Control.Applicative ((*>))
 --   let slackConfig = SlackConfig {
 --                                webHookUrl = "https://hooks.slack.com/services/xxxx/xxxxxxx",
 --                                httpManager = appHttpManager foundation,
---                                logStatus = \_ -> True
+--                                responseFilter = \\resp -> status400 == responseStatus resp,
+--                                requestFilter = \\_ -> True
 --                              }
 --   -- Create the WAI application and apply middlewares
 --   appPlain <- toWaiAppPlain foundation
 --   return $ slack slackConfig $ logWare $ defaultMiddlewaresNoLogging appPlain
 -- @
---
--- | Slack configuration for the middleware
+
+-- | Slack configuration for the middleware.
+-- Slack notification will be emitted only if this evaluates to True:
+-- 'responseFilter' && 'requestFilter'. This comes handy in situations
+-- where you don't want to send notifications for certain 'Request's
+-- even if 'responseFilter' results in 'True'.
 data SlackConfig = SlackConfig
   { webHookUrl :: String -- ^ Slack webhook URL
   , httpManager :: Manager
-  , requestFilter :: Request -> Bool -- ^ If 'True', show slack notification
-  , responseFilter :: Response -> Bool
+  , responseFilter :: Response -> Bool -- ^ If 'True', check
+                                       -- 'requestFilter' to see if
+                                       -- slack notiication needs to
+                                       -- be sent. On False, no slack
+                                       -- notification is sent.
+  , requestFilter :: Request -> Bool -- ^ If 'True', show slack
+                                     -- notification. Else no slack
+                                     -- notification is sent. Note
+                                     -- that this condition is only
+                                     -- checked if 'responseFilter' is
+                                     -- 'True'.
   }
 
 slackCall :: SlackConfig -> String -> IO ()
