@@ -15,11 +15,12 @@ import Network.HTTP.Types.Status
 let slackConfig = SlackConfig {
     webHookUrl = "https://hooks.slack.com/services/xxx/xxxxxxxx",
     httpManager = appHttpManager foundation,
-    logStatus = \status -> status400 == status
+    responseFilter = \resp -> status400 == responseStatus resp,
+    requestFilter = \_ -> True
 }
 ```
 
-The above configuration will send slack notification to all 400 http
+The above configuration will send slack notification for all 400 http
 status code.
 
 ### Integrating with yesod scaffolding templates
@@ -34,7 +35,8 @@ makeApplication foundation = do
   let slackConfig = SlackConfig {
                                webHookUrl = "https://hooks.slack.com/services/xxxx/xxxxxxx",
                                httpManager = appHttpManager foundation,
-                               logStatus = \_ -> True
+                               responseFilter = \resp -> status400 == responseStatus resp,
+                               requestFilter = \_ -> True
                              }
   -- Create the WAI application and apply middlewares
   appPlain <- toWaiAppPlain foundation
