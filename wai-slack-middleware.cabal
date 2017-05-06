@@ -1,5 +1,5 @@
 name:                wai-slack-middleware
-version:             0.1.0.0
+version:             0.2.0
 synopsis:            A Slack middleware for WAI
 description:         Logs the request information into Slack through webhook from 
                      a WAI application.
@@ -11,7 +11,7 @@ maintainer:          sibi@psibi.in
 copyright:           Copyright: (c) 2017 Sibi
 category:            Web
 build-type:          Simple
-extra-source-files:  README.md
+extra-source-files:  README.md, CHANGELOG.md
 cabal-version:       >=1.10
 
 library
