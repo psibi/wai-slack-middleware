@@ -15,12 +15,13 @@ module Network.Wai.Middleware.Slack
   ) where
 
 import Network.Wai
-       (Middleware(..), Application(..), requestHeaders, Request,
+       (Middleware(..), Application(..), requestHeaders, Response, Request,
         responseStatus)
 import Network.HTTP.Types.Status (Status(..))
-import Network.HTTP.Client hiding (responseStatus)
+import Network.HTTP.Client hiding (responseStatus, Response, Request)
 import Data.Aeson (encode, object, (.=))
 import Data.Monoid ((<>))
+import Control.Concurrent (forkIO)
 #if !MIN_VERSION_base(4,8,0)
 import Control.Applicative ((*>))
 #endif
@@ -61,7 +62,8 @@ import Control.Applicative ((*>))
 data SlackConfig = SlackConfig
   { webHookUrl :: String -- ^ Slack webhook URL
   , httpManager :: Manager
-  , logStatus :: Status -> Bool -- ^ Kind of HTTP Status for which you want slack notification.
+  , requestFilter :: Request -> Bool -- ^ If 'True', show slack notification
+  , responseFilter :: Response -> Bool
   }
 
 slackCall :: SlackConfig -> String -> IO ()
@@ -74,16 +76,21 @@ slackCall sconfig payload = do
         { method = "POST"
         , requestBody = RequestBodyLBS $ encode reqObj
         }
-  httpLbs req' (httpManager sconfig)
+  _ <- forkIO $ httpLbs req' (httpManager sconfig) >> return ()
   return ()
+
+emitNotification :: SlackConfig -> Response -> Request -> Bool
+emitNotification sconfig resp req =
+  (responseFilter sconfig $ resp) && (requestFilter sconfig $ req)
+
 
 -- | Slack middleware for Wai. Use the `logStatus` to control on which
 -- status you want to log the request information in Slack.
 slack :: SlackConfig -> Middleware
 slack sconfig (app :: Application) env sendResponse =
-  app env $
+  app (env :: Request) $
   \res ->
-     if (logStatus sconfig $ responseStatus res)
+     if emitNotification sconfig res env
        then slackCall
               sconfig
               ("Status " <> (show $ statusCode $ responseStatus res) <> " " <>
