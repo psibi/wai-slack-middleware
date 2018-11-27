@@ -41,6 +41,7 @@ jobs:
       PACKCHECK_GITHUB_URL: 'https://raw.githubusercontent.com/harendra-kumar/packcheck'
       PACKCHECK_GITHUB_COMMIT: 'c4faad78b3292136a40a228196c3da0e3cac6e0c'
       PACKCHECK_LOCAL_PATH: './packcheck.sh'
+      BUILD: stack
     
 - job: macOS
   pool:
