@@ -17,6 +17,8 @@ jobs:
       CURL=$(which curl)
       PACKCHECK_URL=${PACKCHECK_GITHUB_URL}/${PACKCHECK_GITHUB_COMMIT}/packcheck.sh
       if test ! -e "$PACKCHECK_LOCAL_PATH"; then $CURL -sL -o "$PACKCHECK_LOCAL_PATH" $PACKCHECK_URL; fi;
+      echo $PACKCHECK_LOCAL_PATH
+      ls $PACKCHECK_LOCAL_PATH
       chmod +x $PACKCHECK_LOCAL_PATH
 
       # This script is governed by various PACKCHECK envvars that are set above.
