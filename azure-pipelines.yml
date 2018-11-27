@@ -24,7 +24,7 @@ jobs:
       # the travis CI environment.      
     displayName: 'Setup Build tools'
     env:  
-      CABAL_REINIT_CONFIG:y
+      CABAL_REINIT_CONFIG: y
       LC_ALL:C.UTF-8
       ENABLE_INSTALL:y
       STACK_UPGRADE:y
