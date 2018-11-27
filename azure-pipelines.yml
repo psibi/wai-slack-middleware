@@ -18,6 +18,8 @@ jobs:
       PACKCHECK_URL=${PACKCHECK_GITHUB_URL}/${PACKCHECK_GITHUB_COMMIT}/packcheck.sh
       if test ! -e "$PACKCHECK_LOCAL_PATH"; then $CURL -sL -o "$PACKCHECK_LOCAL_PATH" $PACKCHECK_URL; fi;
       echo $PACKCHECK_LOCAL_PATH
+      echo hello
+      echo $PACKCHECK_GITHUB_URL
       ls $PACKCHECK_LOCAL_PATH
       chmod +x $PACKCHECK_LOCAL_PATH
 
@@ -37,6 +39,7 @@ jobs:
       TOOLS_DIR: '/opt'
       PACKCHECK_GITHUB_URL: 'https://raw.githubusercontent.com/harendra-kumar/packcheck'
       PACKCHECK_GITHUB_COMMIT: 'c4faad78b3292136a40a228196c3da0e3cac6e0c'
+      PACKCHECK_LOCAL_PATH: './packcheck.sh'
     
   - script: bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=/bin:/usr/bin"
       
