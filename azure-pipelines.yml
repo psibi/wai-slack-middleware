@@ -26,8 +26,7 @@ jobs:
       # This script is governed by various PACKCHECK envvars that are set above.
       # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
       # the travis CI environment.      
-      bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=/bin:/usr/bin"
-
+      $PACKCHECK_LOCAL_PATH $BUILD PATH=/bin:/usr/bin
     displayName: 'Setup Build tools'
     env:  
       CABAL_REINIT_CONFIG: y
