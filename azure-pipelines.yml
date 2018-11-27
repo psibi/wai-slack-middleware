@@ -10,7 +10,7 @@ jobs:
   steps:
   - script: echo hello from $test1 Linux $test2
     env: 
-      test2: 1
+      test1: 1
       test2: 2
 - job: macOS
   pool:
