@@ -19,7 +19,7 @@ variables:
   BUILD: stack
 
 jobs:
-- job: 'Stack Build in Linux'
+- job: Stack_Linux
   pool:
     vmImage: 'ubuntu-16.04'
   strategy:
@@ -56,7 +56,7 @@ jobs:
       # the travis CI environment.
       bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=$SPATH:/bin:/usr/bin"
     displayName: 'Setup Build tools'
-- job: 'Cabal Build in Linux'
+- job: Cabal_Linux
   pool:
     vmImage: 'ubuntu-16.04'
   strategy:
