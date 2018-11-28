@@ -56,7 +56,6 @@ jobs:
       # the travis CI environment.
       bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=$SPATH:/bin:/usr/bin"
     displayName: 'Setup Build tools'
-jobs:
 - job: Cabal Build in Linux
   pool:
     vmImage: 'ubuntu-16.04'
