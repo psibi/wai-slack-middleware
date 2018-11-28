@@ -19,7 +19,7 @@ variables:
   BUILD: stack
 
 jobs:
-- job: 'Stack Build in Linux''
+- job: 'Stack Build in Linux'
   pool:
     vmImage: 'ubuntu-16.04'
   strategy:
