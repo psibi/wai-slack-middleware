@@ -33,8 +33,8 @@ jobs:
         BUILD: stack
       cabal-new-8.6.1:
         BUILD: cabal-new
-        RESOLVER: lts-12
-        CABALVER: 2.4.1.0
+        RESOLVER: lts-12.20
+        CABALVER: 2.2.0.1
       cabal-new-8.4.4:
         BUILD: cabal-new
         RESOLVER: lts-11
