@@ -42,6 +42,8 @@ jobs:
   - script: |
       # Emit the value of the var specified as arg only when the build is cabal
       cabal_env() { test "$BUILD" = cabal && echo $1; }
+      echo jifatest
+      ls /usr/bin
 
       # If a custom stack-yaml is specified, replace the default with that
       if test -e "$STACK_YAML"; then rm -f stack.yaml && ln -sv $STACK_YAML stack.yaml; else true; fi
