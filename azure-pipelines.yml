@@ -75,7 +75,7 @@ jobs:
       sudo apt-get install software-properties-common
       sudo add-apt-repository -y ppa:hvr/ghc
       sudo apt-get update
-      sudo apt-get install ghc-$GHCVER cabal-$CABALVER alex happy
+      sudo apt-get install ghc-$GHCVER cabal-install-$CABALVER happy-1.19.4 alex-3.1.3
       # Emit the value of the var specified as arg only when the build is cabal
       cabal_env() { test "$BUILD" = cabal && echo $1; }
 
