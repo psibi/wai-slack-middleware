@@ -63,11 +63,11 @@ jobs:
     maxParallel: 2
     matrix:
       ghc-8.0:
-        BUILD: new-build
+        BUILD: cabal-new
         GHCVER: 8.4.4
         CABALVER: 2.4
       ghc-8.6:
-        BUILD: new-build
+        BUILD: cabal-new
         GHCVER: 8.2.2
         CABALVER: 2.4
   steps:
