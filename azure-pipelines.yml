@@ -22,6 +22,23 @@ jobs:
 - job: Linux
   pool:
     vmImage: 'ubuntu-16.04'
+  strategy:
+    maxParallel: 4
+    matrix:
+      lts12:
+        RESOLVER: lts-12
+        GHCVER: 8.4
+        BUILD: stack
+      lts11:
+        RESOLVER: lts-11
+        GHCVER: 8.2
+        BUILD: stack
+      cabal-new-8.6.1:
+        BUILD: cabal-new
+        GHCVER: 8.6.1
+      cabal-new-8.4.4:
+        BUILD: cabal-new
+        GHCVER: 8.4.4
   steps:
   - script: |
       # If a custom stack-yaml is specified, replace the default with that
