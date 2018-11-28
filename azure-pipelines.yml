@@ -18,8 +18,6 @@ variables:
   PACKCHECK_LOCAL_PATH: './packcheck.sh'
   BUILD: stack
   # Windows variables
-  PATH: "%PATH%;%APPDATA%\\local\\bin"
-  LOCAL_BIN: "%APPDATA%\\local\\bin"
 
 jobs:
 - job: Stack_Linux
@@ -142,10 +140,16 @@ jobs:
       where stack.exe || curl -sSkL -ostack.zip http://www.stackage.org/stack/windows-x86_64 && 7z x stack.zip stack.exe && move stack.exe %LOCAL_BIN%
       if defined STACKVER (stack upgrade --binary-only --binary-version %STACKVER%) else (stack upgrade --binary-only || ver > nul)
       stack --version
+    env:
+      PATH: "%PATH%;%APPDATA%\\local\\bin"
+      LOCAL_BIN: "%APPDATA%\\local\\bin"
     displayName: Setup Stack
   - script: |
       stack setup > nul
       for /f "usebackq tokens=*" %%i in (`where 7z.exe`) do set PATH7Z=%%i\..
       for /f "usebackq tokens=*" %%i in (`where git.exe`) do set PATHGIT=%%i\..
       chcp 65001 && stack exec bash -- -c "chmod +x %PACKCHECK_LOCAL_PATH%; %PACKCHECK_LOCAL_PATH% stack PATH=/usr/bin:\"%PATH7Z%\":\"%PATHGIT%\""
+    env:
+      PATH: "%PATH%;%APPDATA%\\local\\bin"
+      LOCAL_BIN: "%APPDATA%\\local\\bin"
     displayName: Test script
