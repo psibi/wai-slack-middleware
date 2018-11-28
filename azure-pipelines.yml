@@ -62,10 +62,12 @@ jobs:
       stack install cabal-install
       cabal --version
 
+      SPATH=$(stack path --bin-path)
+      echo STACK PATH: $SPATH
       # This script is governed by various PACKCHECK envvars that are set above.
       # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
       # the travis CI environment.
-      bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=/bin:/usr/bin"
+      bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=$SPATH:/bin:/usr/bin"
     displayName: 'Setup Build tools'
   - script: |
       echo hello
