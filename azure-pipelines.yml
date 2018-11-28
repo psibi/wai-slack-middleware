@@ -27,18 +27,16 @@ jobs:
     matrix:
       lts12:
         RESOLVER: lts-12
-        GHCVER: 8.4
         BUILD: stack
       lts11:
         RESOLVER: lts-11
-        GHCVER: 8.2
         BUILD: stack
       cabal-new-8.6.1:
         BUILD: cabal-new
-        GHCVER: 8.6.1
+        RESOLVER: lts-12
       cabal-new-8.4.4:
         BUILD: cabal-new
-        GHCVER: 8.4.4
+        RESOLVER: lts-11
   steps:
   - script: |
       # Emit the value of the var specified as arg only when the build is cabal
@@ -58,7 +56,6 @@ jobs:
       ls $PACKCHECK_LOCAL_PATH
       chmod +x $PACKCHECK_LOCAL_PATH
 
-      bash -c "$PACKCHECK_LOCAL_PATH stack setup PATH=/bin:/usr/bin"
       # This script is governed by various PACKCHECK envvars that are set above.
       # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
       # the travis CI environment.
