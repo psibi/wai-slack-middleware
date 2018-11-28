@@ -19,31 +19,25 @@ variables:
   BUILD: stack
 
 jobs:
-- job: Linux
+- job: Stack Build in Linux
   pool:
     vmImage: 'ubuntu-16.04'
   strategy:
-    maxParallel: 4
+    maxParallel: 3
     matrix:
       lts12:
+        BUILD: stack
         RESOLVER: lts-12
-        BUILD: stack
       lts11:
-        RESOLVER: lts-11
         BUILD: stack
-      cabal-new-8.6.1:
-        BUILD: cabal-new
-        RESOLVER: lts-12.20
-        CABALVER: 2.2.0.1
-      cabal-new-8.4.4:
-        BUILD: cabal-new
         RESOLVER: lts-11
+      lts-10:
+        BUILD: stack
+        RESOLVER: lts-10
   steps:
   - script: |
       # Emit the value of the var specified as arg only when the build is cabal
       cabal_env() { test "$BUILD" = cabal && echo $1; }
-      echo jifatest
-      ls /usr/bin
 
       # If a custom stack-yaml is specified, replace the default with that
       if test -e "$STACK_YAML"; then rm -f stack.yaml && ln -sv $STACK_YAML stack.yaml; else true; fi
@@ -53,14 +47,7 @@ jobs:
       CURL=$(which curl)
       PACKCHECK_URL=${PACKCHECK_GITHUB_URL}/${PACKCHECK_GITHUB_COMMIT}/packcheck.sh
       if test ! -e "$PACKCHECK_LOCAL_PATH"; then $CURL -sL -o "$PACKCHECK_LOCAL_PATH" $PACKCHECK_URL; fi;
-      echo $PACKCHECK_LOCAL_PATH
-      echo hello
-      echo $PACKCHECK_GITHUB_URL
-      ls $PACKCHECK_LOCAL_PATH
       chmod +x $PACKCHECK_LOCAL_PATH
-
-      stack install cabal-install
-      cabal --version
 
       SPATH=$(stack path --bin-path)
       echo STACK PATH: $SPATH
@@ -69,11 +56,41 @@ jobs:
       # the travis CI environment.
       bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=$SPATH:/bin:/usr/bin"
     displayName: 'Setup Build tools'
+jobs:
+- job: Cabal Build in Linux
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    maxParallel: 2
+    matrix:
+      ghc-8.0:
+        BUILD: new-build
+        GHCVER: 8.4.4
+        CABALVER: 2.4
+      ghc-8.6:
+        BUILD: new-build
+        GHCVER: 8.2.2
+        CABALVER: 2.4
+  steps:
   - script: |
-      echo hello
-      echo $BUILD
-      echo no
-    displayName: 'Experiment stuff'
+      sudo apt-get install software-properties-common
+      sudo add-apt-repository -y ppa:hvr/ghc
+      sudo apt-get update
+      sudo apt-get install ghc-8.0.1 cabal-1.24 alex-3.1.7 happy-1.19.5
+      # Emit the value of the var specified as arg only when the build is cabal
+      cabal_env() { test "$BUILD" = cabal && echo $1; }
+
+      # Get packcheck if needed
+      CURL=$(which curl)
+      PACKCHECK_URL=${PACKCHECK_GITHUB_URL}/${PACKCHECK_GITHUB_COMMIT}/packcheck.sh
+      if test ! -e "$PACKCHECK_LOCAL_PATH"; then $CURL -sL -o "$PACKCHECK_LOCAL_PATH" $PACKCHECK_URL; fi;
+      chmod +x $PACKCHECK_LOCAL_PATH
+
+      # This script is governed by various PACKCHECK envvars that are set above.
+      # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
+      # the travis CI environment.
+      bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:/opt:/bin:/usr/bin"
+    displayName: 'Setup Build tools'
 
 - job: macOS
   pool:
