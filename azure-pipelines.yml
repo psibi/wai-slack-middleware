@@ -94,8 +94,40 @@ jobs:
 - job: macOS
   pool:
     vmImage: 'macOS-10.13'
+  strategy:
+    maxParallel: 3
+    matrix:
+      lts12:
+        BUILD: stack
+        RESOLVER: lts-12
+      lts11:
+        BUILD: stack
+        RESOLVER: lts-11
+      lts-10:
+        BUILD: stack
+        RESOLVER: lts-10
   steps:
-  - script: echo hello from macOS
+  - script: |
+      # Emit the value of the var specified as arg only when the build is cabal
+      cabal_env() { test "$BUILD" = cabal && echo $1; }
+
+      # If a custom stack-yaml is specified, replace the default with that
+      if test -e "$STACK_YAML"; then rm -f stack.yaml && ln -sv $STACK_YAML stack.yaml; else true; fi
+      unset STACK_YAML
+
+      # Get packcheck if needed
+      CURL=$(which curl)
+      PACKCHECK_URL=${PACKCHECK_GITHUB_URL}/${PACKCHECK_GITHUB_COMMIT}/packcheck.sh
+      if test ! -e "$PACKCHECK_LOCAL_PATH"; then $CURL -sL -o "$PACKCHECK_LOCAL_PATH" $PACKCHECK_URL; fi;
+      chmod +x $PACKCHECK_LOCAL_PATH
+
+      SPATH=$(stack path --bin-path)
+      echo STACK PATH: $SPATH
+      # This script is governed by various PACKCHECK envvars that are set above.
+      # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
+      # the travis CI environment.
+      bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=$SPATH:/bin:/usr/bin"
+    displayName: 'Setup Build tools'
 - job: Windows
   pool:
     vmImage: 'vs2017-win2016'
