@@ -1,7 +1,4 @@
-resolver: lts-8.12
-
-extra-deps:
-- http-client-0.5.6.1
+resolver: lts-12.7
 
 packages:
 - '.'
