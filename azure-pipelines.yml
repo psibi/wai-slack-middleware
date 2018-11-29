@@ -30,6 +30,7 @@ jobs:
       Expand-Archive $env:TEMP\stack.zip -DestinationPath $env:TEMP\
       Copy-Item -path $env:TEMP\stack.exe -Destination $env:PATH[0]
       Copy-Item -path $env:TEMP\7z.exe -Destination $env:PATH[0]
+      stack --version
     displayName: "Download Stack"
   - bash: |
       echo "hell form bash"
