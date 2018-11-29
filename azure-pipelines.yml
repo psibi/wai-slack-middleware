@@ -25,10 +25,11 @@ jobs:
   steps:
   - script: |
       echo "cha cha"
-      bash -c "from bash: hello"
   - powershell: |
       Write-Host "hello world"
     displayName: PShell
+  - bash: |
+      echo "hell form bash"
   - script: |
       if not exist %PACKCHECK_LOCAL_PATH% curl -sSkL -o%PACKCHECK_LOCAL_PATH% %PACKCHECK_GITHUB_URL%/%PACKCHECK_GITHUB_COMMIT%/packcheck.sh
       if not exist %LOCAL_BIN% mkdir %LOCAL_BIN%
