@@ -28,13 +28,12 @@ jobs:
       # If a custom stack-yaml is specified, replace the default with that
       if test -e "$STACK_YAML"; then rm -f stack.yaml && ln -sv $STACK_YAML stack.yaml; else true; fi
       unset STACK_YAML
+      ls /usr/bin
       # Get packcheck if needed
       CURL=$(which curl)
       PACKCHECK_URL=${PACKCHECK_GITHUB_URL}/${PACKCHECK_GITHUB_COMMIT}/packcheck.sh
       if test ! -e "$PACKCHECK_LOCAL_PATH"; then $CURL -sL -o "$PACKCHECK_LOCAL_PATH" $PACKCHECK_URL; fi;
       chmod +x $PACKCHECK_LOCAL_PATH
-
-      which 7z.exe || $CURL -sL -o "$PACKCHECK_LOCAL_PATH" "https://www.7-zip.org/a/7z1805-x64.exe"
 
       # This script is governed by various PACKCHECK envvars that are set above.
       # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
