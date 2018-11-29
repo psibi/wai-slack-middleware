@@ -133,10 +133,12 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-  - bash.exe: |
+  - bash: |
       echo "From bash initial step"
     displayName: Bash test
-  - powershell.exe: |
+  - script: |
+      echo "cha cha"
+
       Write-Host "hello world"
       bash -c "from bash: hello"
 
