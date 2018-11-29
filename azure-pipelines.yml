@@ -27,7 +27,7 @@ jobs:
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       Invoke-WebRequest -Uri http://www.stackage.org/stack/windows-i386 -OutFile $env:TEMP\stack.zip
       Expand-Archive $env:TEMP\stack.zip -DestinationPath $env:TEMP\
-      Copy-Item -path $env:TEMP\stack.exe -Destination $env.PATH[0]
+      Copy-Item -path $env:TEMP\stack.exe -Destination $env:PATH[0]
     displayName: "Download Stack"
   - bash: |
       echo "hell form bash"
