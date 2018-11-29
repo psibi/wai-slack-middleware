@@ -33,8 +33,6 @@ jobs:
       # If a custom stack-yaml is specified, replace the default with that
       if test -e "$STACK_YAML"; then rm -f stack.yaml && ln -sv $STACK_YAML stack.yaml; else true; fi
       unset STACK_YAML
-      ls /bin
-      ls /usr/bin
       # Get packcheck if needed
       CURL=$(which curl)
       PACKCHECK_URL=${PACKCHECK_GITHUB_URL}/${PACKCHECK_GITHUB_COMMIT}/packcheck.sh
@@ -44,7 +42,8 @@ jobs:
       # This script is governed by various PACKCHECK envvars that are set above.
       # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
       # the travis CI environment.
-      bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=/bin:/usr/bin:$PATH"
+      echo $PATH
+      bash -c "$PACKCHECK_LOCAL_PATH $BUILD"
     env:
       BUILD: stack
       RESOLVER: lts-12
