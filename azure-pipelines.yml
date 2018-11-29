@@ -28,7 +28,7 @@ jobs:
       Invoke-WebRequest -Uri http://www.stackage.org/stack/windows-i386 -OutFile $env:TEMP\stack.zip
       Invoke-WebRequest -Uri https://www.7-zip.org/a/7z1805-x64.exe -OutFile $env:TEMP\7z.exe
       Expand-Archive $env:TEMP\stack.zip -DestinationPath $env:TEMP\
-      Copy-Item -path $env:TEMP\stack.exe -Destination $env:PATH[0]
+      Copy-Item -path $env:TEMP\stack.exe -Destination C:\\usr\bin
       Copy-Item -path $env:TEMP\7z.exe -Destination $env:PATH[0]
       stack --version
     displayName: "Download Stack"
