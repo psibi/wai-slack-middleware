@@ -23,11 +23,6 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-  - script: |
-      echo "cha cha"
-  - powershell: |
-      Write-Host "hello world"
-    displayName: PShell
   - bash: |
       echo "hell form bash"
       # If a custom stack-yaml is specified, replace the default with that
