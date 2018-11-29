@@ -133,7 +133,7 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-  - script: |
+  - powershell: |
       Write-Host "hello world"
       bash -c "from bash: hello"
 
