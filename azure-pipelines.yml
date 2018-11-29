@@ -29,6 +29,7 @@ jobs:
       if test -e "$STACK_YAML"; then rm -f stack.yaml && ln -sv $STACK_YAML stack.yaml; else true; fi
       unset STACK_YAML
       ls /usr/bin
+      ls /bin
       # Get packcheck if needed
       CURL=$(which curl)
       PACKCHECK_URL=${PACKCHECK_GITHUB_URL}/${PACKCHECK_GITHUB_COMMIT}/packcheck.sh
