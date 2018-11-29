@@ -23,6 +23,10 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
+  - powershell: |
+      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+      Invoke-WebRequest -Uri http://www.stackage.org/stack/windows-i386 -OutFile $env:TEMP\stack.zip
+    displayName: "Download Stack"
   - bash: |
       echo "hell form bash"
       # If a custom stack-yaml is specified, replace the default with that
@@ -37,8 +41,6 @@ jobs:
       chmod +x $PACKCHECK_LOCAL_PATH
 
       echo hi $PWD
-      $CURL -sL http://www.stackage.org/stack/windows-i386 -o $PWD/stack.zip
-      unzip $PWD/stack.zip
       # This script is governed by various PACKCHECK envvars that are set above.
       # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
       # the travis CI environment.
