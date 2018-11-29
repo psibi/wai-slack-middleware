@@ -134,6 +134,9 @@ jobs:
     vmImage: 'vs2017-win2016'
   steps:
   - script: |
+      Write-Host "hello world"
+      bash -c "from bash: hello"
+
       if not exist %PACKCHECK_LOCAL_PATH% curl -sSkL -o%PACKCHECK_LOCAL_PATH% %PACKCHECK_GITHUB_URL%/%PACKCHECK_GITHUB_COMMIT%/packcheck.sh
       if not exist %LOCAL_BIN% mkdir %LOCAL_BIN%
       where stack.exe || curl -sSkL -ostack.zip http://www.stackage.org/stack/windows-x86_64 && 7z x stack.zip stack.exe && move stack.exe %LOCAL_BIN%
