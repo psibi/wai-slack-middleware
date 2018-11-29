@@ -28,14 +28,14 @@ jobs:
   - powershell: |
       Write-Host "hello world"
     displayName: PShell
-  - powershell: |
+  - bash: |
       if not exist %PACKCHECK_LOCAL_PATH% curl -sSkL -o%PACKCHECK_LOCAL_PATH% %PACKCHECK_GITHUB_URL%/%PACKCHECK_GITHUB_COMMIT%/packcheck.sh
       if not exist %LOCAL_BIN% mkdir %LOCAL_BIN%
       where stack.exe || curl -sSkL -ostack.zip http://www.stackage.org/stack/windows-x86_64 && 7z x stack.zip stack.exe && move stack.exe %LOCAL_BIN%
       if defined STACKVER (stack upgrade --binary-only --binary-version %STACKVER%) else (stack upgrade --binary-only || ver > nul)
       stack --version
     displayName: Setup Stack
-  - powershell: |
+  - bash: |
       stack setup > nul
       for /f "usebackq tokens=*" %%i in (`where 7z.exe`) do set PATH7Z=%%i\..
       for /f "usebackq tokens=*" %%i in (`where git.exe`) do set PATHGIT=%%i\..
