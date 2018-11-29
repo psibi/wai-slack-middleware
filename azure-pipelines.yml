@@ -133,22 +133,44 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-  - script: |
-      if not exist %PACKCHECK_LOCAL_PATH% curl -sSkL -o%PACKCHECK_LOCAL_PATH% %PACKCHECK_GITHUB_URL%/%PACKCHECK_GITHUB_COMMIT%/packcheck.sh
-      if not exist %LOCAL_BIN% mkdir %LOCAL_BIN%
-      where stack.exe || curl -sSkL -ostack.zip http://www.stackage.org/stack/windows-x86_64 && 7z x stack.zip stack.exe && move stack.exe %LOCAL_BIN%
-      if defined STACKVER (stack upgrade --binary-only --binary-version %STACKVER%) else (stack upgrade --binary-only || ver > nul)
-      stack --version
-    env:
-      PATH: "%PATH%;%APPDATA%\\local\\bin"
-      LOCAL_BIN: "%APPDATA%\\local\\bin"
-    displayName: Setup Stack
-  - script: |
-      stack setup > nul
-      for /f "usebackq tokens=*" %%i in (`where 7z.exe`) do set PATH7Z=%%i\..
-      for /f "usebackq tokens=*" %%i in (`where git.exe`) do set PATHGIT=%%i\..
-      chcp 65001 && stack exec bash -- -c "chmod +x %PACKCHECK_LOCAL_PATH%; %PACKCHECK_LOCAL_PATH% stack PATH=/usr/bin:\"%PATH7Z%\":\"%PATHGIT%\""
-    env:
-      PATH: "%PATH%;%APPDATA%\\local\\bin"
-      LOCAL_BIN: "%APPDATA%\\local\\bin"
-    displayName: Test script
+  - bash: |
+      # Emit the value of the var specified as arg only when the build is cabal
+      cabal_env() { test "$BUILD" = cabal && echo $1; }
+
+      # If a custom stack-yaml is specified, replace the default with that
+      if test -e "$STACK_YAML"; then rm -f stack.yaml && ln -sv $STACK_YAML stack.yaml; else true; fi
+      unset STACK_YAML
+
+      # Get packcheck if needed
+      CURL=$(which curl)
+      PACKCHECK_URL=${PACKCHECK_GITHUB_URL}/${PACKCHECK_GITHUB_COMMIT}/packcheck.sh
+      if test ! -e "$PACKCHECK_LOCAL_PATH"; then $CURL -sL -o "$PACKCHECK_LOCAL_PATH" $PACKCHECK_URL; fi;
+      chmod +x $PACKCHECK_LOCAL_PATH
+
+      SPATH=$(stack path --bin-path)
+      echo STACK PATH: $SPATH
+      # This script is governed by various PACKCHECK envvars that are set above.
+      # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
+      # the travis CI environment.
+      bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=$SPATH:/bin:/usr/bin"
+    displayName: 'Setup Build tools'
+
+  # - script: |
+  #     if not exist %PACKCHECK_LOCAL_PATH% curl -sSkL -o%PACKCHECK_LOCAL_PATH% %PACKCHECK_GITHUB_URL%/%PACKCHECK_GITHUB_COMMIT%/packcheck.sh
+  #     if not exist %LOCAL_BIN% mkdir %LOCAL_BIN%
+  #     where stack.exe || curl -sSkL -ostack.zip http://www.stackage.org/stack/windows-x86_64 && 7z x stack.zip stack.exe && move stack.exe %LOCAL_BIN%
+  #     if defined STACKVER (stack upgrade --binary-only --binary-version %STACKVER%) else (stack upgrade --binary-only || ver > nul)
+  #     stack --version
+  #   env:
+  #     PATH: "%PATH%;%APPDATA%\\local\\bin"
+  #     LOCAL_BIN: "%APPDATA%\\local\\bin"
+  #   displayName: Setup Stack
+  # - script: |
+  #     stack setup > nul
+  #     for /f "usebackq tokens=*" %%i in (`where 7z.exe`) do set PATH7Z=%%i\..
+  #     for /f "usebackq tokens=*" %%i in (`where git.exe`) do set PATHGIT=%%i\..
+  #     chcp 65001 && stack exec bash -- -c "chmod +x %PACKCHECK_LOCAL_PATH%; %PACKCHECK_LOCAL_PATH% stack PATH=/usr/bin:\"%PATH7Z%\":\"%PATHGIT%\""
+  #   env:
+  #     PATH: "%PATH%;%APPDATA%\\local\\bin"
+  #     LOCAL_BIN: "%APPDATA%\\local\\bin"
+  #   displayName: Test script
