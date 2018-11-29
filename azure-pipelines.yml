@@ -11,7 +11,6 @@ variables:
   CABAL_CHECK_RELAX: y
   CABAL_NO_SANDBOX: y
   CABAL_HACKAGE_MIRROR: 'hackage.haskell.org:http://hackage.fpcomplete.com'
-  PATH: '/bin:/usr/bin'
   TOOLS_DIR: '/opt'
   PACKCHECK_GITHUB_URL: 'https://raw.githubusercontent.com/harendra-kumar/packcheck'
   PACKCHECK_GITHUB_COMMIT: 'c4faad78b3292136a40a228196c3da0e3cac6e0c'
@@ -24,15 +23,12 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-  - powershell: |
-      Write-Host "hello world"
-    displayName: PShell
   - script: |
       echo "cha cha"
       bash -c "from bash: hello"
-
-
-
+  - powershell: |
+      Write-Host "hello world"
+    displayName: PShell
       if not exist %PACKCHECK_LOCAL_PATH% curl -sSkL -o%PACKCHECK_LOCAL_PATH% %PACKCHECK_GITHUB_URL%/%PACKCHECK_GITHUB_COMMIT%/packcheck.sh
       if not exist %LOCAL_BIN% mkdir %LOCAL_BIN%
       where stack.exe || curl -sSkL -ostack.zip http://www.stackage.org/stack/windows-x86_64 && 7z x stack.zip stack.exe && move stack.exe %LOCAL_BIN%
