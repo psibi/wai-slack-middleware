@@ -41,12 +41,10 @@ jobs:
       if test ! -e "$PACKCHECK_LOCAL_PATH"; then $CURL -sL -o "$PACKCHECK_LOCAL_PATH" $PACKCHECK_URL; fi;
       chmod +x $PACKCHECK_LOCAL_PATH
 
-      SPATH=$(stack path --bin-path)
-      echo STACK PATH: $SPATH
       # This script is governed by various PACKCHECK envvars that are set above.
       # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
       # the travis CI environment.
-      bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=$SPATH:/bin:/usr/bin:$PATH"
+      bash -c "$PACKCHECK_LOCAL_PATH $BUILD PATH=/bin:/usr/bin:$PATH"
     env:
       BUILD: stack
       RESOLVER: lts-12
