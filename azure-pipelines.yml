@@ -47,4 +47,3 @@ jobs:
     env:
       BUILD: stack
       RESOLVER: lts-12
-    displayName: Test
