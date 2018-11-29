@@ -133,7 +133,7 @@ jobs:
   pool:
     vmImage: 'vs2017-win2016'
   steps:
-  - powershell: |
+  - script: |
       if not exist %PACKCHECK_LOCAL_PATH% curl -sSkL -o%PACKCHECK_LOCAL_PATH% %PACKCHECK_GITHUB_URL%/%PACKCHECK_GITHUB_COMMIT%/packcheck.sh
       if not exist %LOCAL_BIN% mkdir %LOCAL_BIN%
       where stack.exe || curl -sSkL -ostack.zip http://www.stackage.org/stack/windows-x86_64 && 7z x stack.zip stack.exe && move stack.exe %LOCAL_BIN%
@@ -143,7 +143,7 @@ jobs:
       PATH: "%PATH%;%APPDATA%\\local\\bin"
       LOCAL_BIN: "%APPDATA%\\local\\bin"
     displayName: Setup Stack
-  - powershell: |
+  - script: |
       stack setup > nul
       for /f "usebackq tokens=*" %%i in (`where 7z.exe`) do set PATH7Z=%%i\..
       for /f "usebackq tokens=*" %%i in (`where git.exe`) do set PATHGIT=%%i\..
