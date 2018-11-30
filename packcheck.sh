@@ -598,8 +598,10 @@ fetch_stack_linux() {
 fetch_stack_windows() {
   curl -sSkL http://www.stackage.org/stack/windows-i386 -o stack.zip
   unzip -o stack.zip
-  stack.exe --version
-  stack --version
+  echo "List files"
+  ls /c/Users/VssAdministrator/AppData/Roaming/local/bin/
+  /c/Users/VssAdministrator/AppData/Roaming/local/bin/stack --version
+  /c/Users/VssAdministrator/AppData/Roaming/local/bin/stack.exe --version
 }
 
 # $1: directory to place stack executable in
