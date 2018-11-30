@@ -16,6 +16,7 @@ variables:
   PACKCHECK_GITHUB_COMMIT: 'c4faad78b3292136a40a228196c3da0e3cac6e0c'
   PACKCHECK_LOCAL_PATH: './packcheck.sh'
   BUILD: stack
+  Build.SourcesDirectory: "c:\\"
   # Windows variables
 
 jobs:
@@ -38,10 +39,6 @@ jobs:
       echo $(Build.SourceBranch)
       echo $(uname)
       echo $PATH
-      cd /
-      git init s
-      cd s
-      git clone
       # If a custom stack-yaml is specified, replace the default with that
       if test -e "$STACK_YAML"; then rm -f stack.yaml && ln -sv $STACK_YAML stack.yaml; else true; fi
       unset STACK_YAML
