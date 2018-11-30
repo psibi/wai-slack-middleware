@@ -35,7 +35,7 @@ jobs:
       echo "hell form bash"
       echo $(uname)
       echo $PATH
-      mkdir $TMP
+      ls /
       stack.exe --version
       # If a custom stack-yaml is specified, replace the default with that
       if test -e "$STACK_YAML"; then rm -f stack.yaml && ln -sv $STACK_YAML stack.yaml; else true; fi
@@ -57,4 +57,3 @@ jobs:
     env:
       BUILD: stack
       RESOLVER: lts-12
-      TMP: "d:\\tmp"
