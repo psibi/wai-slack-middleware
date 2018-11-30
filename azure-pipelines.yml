@@ -49,7 +49,7 @@ jobs:
       echo "Going to build"
       stack build
       echo "Going to test"
-      stack test
+      stack test wai-slack-middleware:wai-slack-middleware-test
       # This script is governed by various PACKCHECK envvars that are set above.
       # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
       # the travis CI environment.
