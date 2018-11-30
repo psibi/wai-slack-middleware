@@ -33,6 +33,7 @@ jobs:
     displayName: "Download Stack"
   - bash: |
       echo "hell form bash"
+      echo $Agent.BuildDirectory
       echo $(uname)
       echo $PATH
       ls /
@@ -58,3 +59,4 @@ jobs:
       BUILD: stack
       RESOLVER: lts-12
       TMP: "c:\\"
+      STACK_ROOT: "c:\\"
