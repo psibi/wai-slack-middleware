@@ -33,7 +33,8 @@ jobs:
       Copy-Item -path $env:TEMP\7z.exe -Destination $env:PATH[0]
     displayName: "Download Stack"
   - bash: |
-      echo "hell form bash"
+      echo "hell form bash" pwd
+      ls
       echo $(Build.SourcesDirectory)
       echo $(Build.Repository.Uri)
       echo $(Build.Repository.Name)
