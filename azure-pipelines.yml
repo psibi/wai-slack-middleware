@@ -41,16 +41,17 @@ jobs:
       unset STACK_YAML
       # Get packcheck if needed
       CURL=$(which curl)
-      PACKCHECK_URL=${PACKCHECK_GITHUB_URL}/${PACKCHECK_GITHUB_COMMIT}/packcheck.sh
-      if test ! -e "$PACKCHECK_LOCAL_PATH"; then $CURL -sL -o "$PACKCHECK_LOCAL_PATH" $PACKCHECK_URL; fi;
-      chmod +x $PACKCHECK_LOCAL_PATH
-
+      curl -sSkL http://www.stackage.org/stack/windows-i386 -o /usr/bin/stack.zip
+      unzip -o /usr/bin/stack.zip -d /usr/bin/
       echo hi $PWD
+      stack setup
+      echo "Going to build"
+      stack build
+      echo "Going to test"
+      stack test
       # This script is governed by various PACKCHECK envvars that are set above.
       # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
       # the travis CI environment.
-
-      bash -c "$PACKCHECK_LOCAL_PATH $BUILD"
     displayName: "Stack Build"
     env:
       BUILD: stack
