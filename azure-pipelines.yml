@@ -33,7 +33,7 @@ jobs:
     displayName: "Download Stack"
   - bash: |
       echo "hell form bash"
-      echo $Agent.BuildDirectory
+      echo $(Build.SourcesDirectory)
       echo $(uname)
       echo $PATH
       ls /
