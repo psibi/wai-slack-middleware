@@ -57,4 +57,4 @@ jobs:
     env:
       BUILD: stack
       RESOLVER: lts-12
-      TMP: "D://tmp"
+      TMP: "c:\\"
