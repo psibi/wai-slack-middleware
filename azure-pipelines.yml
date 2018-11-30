@@ -36,7 +36,17 @@ jobs:
       echo "hell form bash"
       echo $(Build.SourcesDirectory)
       echo $(Build.Repository.Uri)
+      echo $(Build.Repository.Name)
+      echo $(Build.Repository.Provider)
+      echo $(Build.Repository.Uri)
+      echo $(Build.RequestedFor)
       echo $(Build.SourceBranch)
+      echo $(Build.SourceBranchName)
+      echo $(Build.SourceVersion)
+      echo $(System.PullRequest.PullRequestId)
+      echo $(System.PullRequest.PullRequestNumber)
+      echo $(System.PullRequest.SourceBranch)
+      echo $(System.PullRequest.TargetBranch)
       echo $(uname)
       echo $PATH
       # If a custom stack-yaml is specified, replace the default with that
