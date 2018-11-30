@@ -74,5 +74,5 @@ jobs:
     env:
       BUILD: stack
       RESOLVER: lts-12
-      TMP: "c:\\"
-      STACK_ROOT: "c:\\"
+      # TMP: "c:\\"
+      # STACK_ROOT: "c:\\"
