@@ -35,6 +35,9 @@ jobs:
   - bash: |
       echo "hell form bash" pwd
       pwd
+      mkdir /sr
+      cp -vr $(pwd)/* /sr/
+      cd /sr
       ls
       echo $(Build.SourcesDirectory)
       echo $(Build.Repository.Uri)
