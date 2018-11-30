@@ -34,6 +34,7 @@ jobs:
     displayName: "Download Stack"
   - bash: |
       echo "hell form bash" pwd
+      pwd
       ls
       echo $(Build.SourcesDirectory)
       echo $(Build.Repository.Uri)
