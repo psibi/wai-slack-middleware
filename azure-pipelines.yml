@@ -33,7 +33,9 @@ jobs:
     displayName: "Download Stack"
   - bash: |
       echo "hell form bash"
-      echo $(Build.SourcesDirectory)
+      echo $Build.SourcesDirectory
+      echo $Build.Repository.Uri
+      echo $Build.SourceBranch
       echo $(uname)
       echo $PATH
       ls /
