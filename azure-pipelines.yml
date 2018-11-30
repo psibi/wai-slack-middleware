@@ -35,9 +35,9 @@ jobs:
   - bash: |
       echo "hell form bash" pwd
       pwd
-      mkdir /sr
-      cp -vr $(pwd)/* /sr/
-      cd /sr
+      mkdir /d/sr
+      cp -vr $(pwd)/* /d/sr/
+      cd /d/sr
       ls
       echo $(Build.SourcesDirectory)
       echo $(Build.Repository.Uri)
@@ -74,5 +74,5 @@ jobs:
     env:
       BUILD: stack
       RESOLVER: lts-12
-      # TMP: "c:\\"
-      # STACK_ROOT: "c:\\"
+      TMP: "d:\\"
+      STACK_ROOT: "d:\\"
