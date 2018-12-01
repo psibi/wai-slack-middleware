@@ -51,7 +51,7 @@ jobs:
       unzip -o /usr/bin/stack.zip -d /usr/bin/
       echo hi $PWD
       stack setup
-      stack setup --upgrade-cabal
+      stack setup --install-cabal 2.4.1.0
       echo "Going to build"
       stack build
       echo "Going to test"
