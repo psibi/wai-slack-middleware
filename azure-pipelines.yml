@@ -1,65 +1,15 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+pool:
+  vmImage: ubuntu-16.04
 
-variables:
-  CABAL_REINIT_CONFIG: y
-  LC_ALL: C.UTF-8
-  ENABLE_INSTALL: y
-  STACK_UPGRADE: y
-  CABAL_CHECK_RELAX: y
-  CABAL_NO_SANDBOX: y
-  CABAL_HACKAGE_MIRROR: 'hackage.haskell.org:http://hackage.fpcomplete.com'
-  TOOLS_DIR: '/opt'
-  PACKCHECK_GITHUB_URL: 'https://raw.githubusercontent.com/harendra-kumar/packcheck'
-  PACKCHECK_GITHUB_COMMIT: 'c4faad78b3292136a40a228196c3da0e3cac6e0c'
-  PACKCHECK_LOCAL_PATH: './packcheck.sh'
-  BUILD: stack
-  Build.SourcesDirectory: "c:\\"
-  # Windows variables
-
-jobs:
-- job: Windows
-  pool:
-    vmImage: 'vs2017-win2016'
-  steps:
-  - bash: |
-      echo "hell form bash" pwd
-      pwd
-      echo $(Build.SourcesDirectory)
-      echo $(Build.Repository.Uri)
-      echo $(Build.Repository.Name)
-      echo $(Build.Repository.Provider)
-      echo $(Build.Repository.Uri)
-      echo $(Build.RequestedFor)
-      echo $(Build.SourceBranch)
-      echo $(Build.SourceBranchName)
-      echo $(Build.SourceVersion)
-      echo $(System.PullRequest.PullRequestId)
-      echo $(System.PullRequest.PullRequestNumber)
-      echo $(System.PullRequest.SourceBranch)
-      echo $(System.PullRequest.TargetBranch)
-      echo $(uname)
-      echo $PATH
-      # If a custom stack-yaml is specified, replace the default with that
-      if test -e "$STACK_YAML"; then rm -f stack.yaml && ln -sv $STACK_YAML stack.yaml; else true; fi
-      unset STACK_YAML
-      # Get packcheck if needed
-      CURL=$(which curl)
-      curl -sSkL http://www.stackage.org/stack/windows-i386 -o /usr/bin/stack.zip
-      unzip -o /usr/bin/stack.zip -d /usr/bin/
-      echo hi $PWD
-      stack setup
-      stack setup --install-cabal 2.4.1.0
-      echo "Going to build"
-      stack build
-      echo "Going to test"
-      stack test wai-slack-middleware:wai-slack-middleware-test
-      # This script is governed by various PACKCHECK envvars that are set above.
-      # In addition, hpc-coveralls needs TRAVIS, TRAVIS_JOB_ID variables set by
-      # the travis CI environment.
-    displayName: "Stack Build"
-    env:
-      BUILD: stack
-      RESOLVER: lts-12
+steps:
+- script: |
+    curl -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+  displayName: Install Stack
+- script: |
+    export PATH=$HOME/.local/bin:$PATH
+    stack --no-terminal --install-ghc test --only-dependencies
+  displayName: Build Dependencies
+- script: |
+    # Build the package, its tests, and its docs and run the tests
+    stack --no-terminal test --haddock --no-haddock-deps
+  displayName: Test Package
