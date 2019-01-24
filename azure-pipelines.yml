@@ -11,6 +11,7 @@ steps:
     stack --no-terminal --install-ghc test --only-dependencies
   displayName: Build Dependencies
 - script: |
+    export PATH=$HOME/.local/bin:$PATH
     # Build the package, its tests, and its docs and run the tests
     stack --no-terminal test --haddock --no-haddock-deps
   displayName: Test Package
