@@ -1,6 +1,6 @@
 # wai-slack-middleware
 
-[![Build Status](https://travis-ci.org/psibi/wai-slack-middleware.svg?branch=master)](https://travis-ci.org/psibi/wai-slack-middleware)
+[![Build Status](https://travis-ci.org/psibi/wai-slack-middleware.svg?branch=master)](https://travis-ci.org/psibi/wai-slack-middleware) [![Build Status](https://dev.azure.com/psibi2000/wai-slack-middleware/_apis/build/status/psibi.wai-slack-middleware?branchName=master)](https://dev.azure.com/psibi2000/wai-slack-middleware/_build/latest?definitionId=1?branchName=master)
 
 A Slack middleware for [wai](https://www.stackage.org/package/wai)
 Used for logging the request information into Slack from a WAI
